@@ -112,7 +112,6 @@ Process 12345 terminated
 | | |
 |---|---|
 | **Author** | Rahil Wijeyesekera |
-| **Student ID** | V01041863 |
-| **Course** | CSC 360 — Operating Systems, University of Victoria |
-| **Language** | C |
-| **Platform** | Linux |
+
+🎓 Project Context:
+This project was developed as part of the CSC 360: Operating Systems course at the University of Victoria. It serves as a practical exploration of POSIX thread synchronization and concurrent system design.
