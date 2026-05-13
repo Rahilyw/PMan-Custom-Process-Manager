@@ -1,9 +1,16 @@
-.phony all:
-all: pman
+# Variables
+CC = gcc
+CFLAGS = -Wall -g
+LIBS = -lreadline
+SRC = src/PMan.c
+TARGET = PMan
 
-pman: PMan.c
-	gcc -Wall PMan.c -lreadline -o PMan -g
+.PHONY: all clean
 
-.PHONY clean:
+all: $(TARGET)
+
+$(TARGET): $(SRC)
+	$(CC) $(CFLAGS) $(SRC) $(LIBS) -o $(TARGET)
+
 clean:
-	-rm -rf *.o *.exe
+	rm -f $(TARGET) *.o *.exe ._*
