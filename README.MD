@@ -103,7 +103,7 @@ Process 12345 terminated
 ## Notes
  
 - When running `inf` via `bg`, use the relative path to the compiled binary: `bg ./tests/inf a 1`
-- `inf.c` requires two arguments (`a` and `1`) — omitting them will cause it to exit immediately
+- `inf.c` requires two arguments (`a` and `1`) omitting them will cause it to exit immediately
 - PMan tracks only processes it has spawned; externally started PIDs are not managed
 ---
  
