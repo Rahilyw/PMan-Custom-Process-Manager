@@ -1,19 +1,118 @@
-Program PMan (Process Manager) is able to create a process (and run it in background), present a list of process, terminate/stop/start a process and show stat of a process.
-
-How to use PMan
-Step 1: compile test files that you want to use
-Step 2: execute "make" in terminal to compile PMan
-Step 3: execute "./PMan" in terminal to run PMan
-Step 4: input supported commands in PMan
-
-Supported commands of PMan:
-1. bg <cmd>: start program <cmd> in the background
-2. bglist: display a list of all the programs currently executing in the background
-3. bgkill <pid>: terminate process <pid>
-4. bgstop <pid>: temporarily stop process <pid>
-5. bgstart <pid>: restart process <pid> which has been previously stopped
-6. pstat <pid>: list comm, state, utime, stime, rss, voluntary_ctxt_switches and nonvoluntary_ctxt_switches of process <pid>
-
-Important notes for bg:
-If you want to run inf.c using bg, compile inf.c using "gcc inf.c -o inf" before you execute "./PMan".
-Compile and run PMan and input "bg ./inf a 1" where "a" and 1 are the parameters required by inf.c. Note that you should use ./inf if inf is not in PATH.
+# PMan — Custom Process Manager
+ 
+> A user-level process manager implemented in C with real-time `/proc` filesystem inspection.
+ 
+![Language](https://img.shields.io/badge/Language-C-blue)
+![Platform](https://img.shields.io/badge/Platform-Linux-green)
+![Course](https://img.shields.io/badge/CSC%20360-Operating%20Systems-purple)
+ 
+---
+ 
+## Overview
+ 
+PMan is a shell-like process manager that demonstrates core operating systems concepts in C. It creates and manages Linux background processes, delivers POSIX signal control (terminate, stop, resume), and reads live process statistics directly from the `/proc` filesystem — with no external dependencies.
+ 
+**Key technical areas covered:**
+- Process creation with `fork()` / `execvp()`
+- POSIX signal delivery (`SIGTERM`, `SIGSTOP`, `SIGCONT`)
+- Real-time process inspection via `/proc/<pid>/stat`
+- Linked-list job tracking and interactive command parsing
+---
+ 
+## Getting Started
+ 
+### 1. Compile test programs
+ 
+```bash
+gcc tests/inf.c -o tests/inf
+gcc tests/args.c -o tests/args
+```
+ 
+### 2. Build PMan
+ 
+```bash
+make
+```
+ 
+### 3. Run PMan
+ 
+```bash
+./PMan
+```
+ 
+---
+ 
+## Command Reference
+ 
+| Command | Description |
+|---|---|
+| `bg <cmd>` | Start a program in the background |
+| `bglist` | List all active background processes with their PIDs |
+| `bgkill <pid>` | Send `SIGTERM` to terminate a process |
+| `bgstop <pid>` | Send `SIGSTOP` to suspend a process |
+| `bgstart <pid>` | Send `SIGCONT` to resume a stopped process |
+| `pstat <pid>` | Print `comm`, `state`, `utime`, `stime`, `rss`, `voluntary_ctxt_switches`, and `nonvoluntary_ctxt_switches` from `/proc/<pid>/stat` |
+ 
+---
+ 
+## Usage Examples
+ 
+**Start a background process**
+```
+> bg ./tests/inf a 1
+Started background process with PID 12345
+```
+ 
+**List all background processes**
+```
+> bglist
+PID: 12345, Command: ./tests/inf
+Total background jobs: 1
+```
+ 
+**Inspect process statistics**
+```
+> pstat 12345
+comm: ./tests/inf
+state: S
+utime: 150
+stime: 30
+rss: 2048
+voluntary_ctxt_switches: 10
+nonvoluntary_ctxt_switches: 2
+```
+ 
+**Stop and resume a process**
+```
+> bgstop 12345
+Sent SIGSTOP (19) to process 12345
+ 
+> bgstart 12345
+Sent SIGCONT (18) to process 12345
+```
+ 
+**Kill a process**
+```
+> bgkill 12345
+Sent SIGTERM (15) to process 12345
+Process 12345 terminated
+```
+ 
+---
+ 
+## Notes
+ 
+- When running `inf` via `bg`, use the relative path to the compiled binary: `bg ./tests/inf a 1`
+- `inf.c` requires two arguments (`a` and `1`) — omitting them will cause it to exit immediately
+- PMan tracks only processes it has spawned; externally started PIDs are not managed
+---
+ 
+## Project Info
+ 
+| | |
+|---|---|
+| **Author** | Rahil Wijeyesekera |
+| **Student ID** | V01041863 |
+| **Course** | CSC 360 — Operating Systems, University of Victoria |
+| **Language** | C |
+| **Platform** | Linux |
